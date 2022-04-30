@@ -16,6 +16,9 @@ export default Game = ({ randomNumbersCount }) => {
     //Empty array → Exc once the first time
     //Full array → Exec on Change
     //Return → Exc on dismount
+
+    useEffect(()=> console.log(selectedNumbers), [selectedNumbers]);
+
     useEffect(() => {
         const numbers = Array.from({ length: randomNumbersCount }).map(() => 1 + Math.floor(10 * Math.random()));
         const target = numbers.slice(0, randomNumbersCount - 2).reduce((acc, cur) => acc + cur, 0);
@@ -26,9 +29,9 @@ export default Game = ({ randomNumbersCount }) => {
 
     const isNumberSelected = (numberIndex) =>
         selectedNumbers.some((number) => number === numberIndex);
-    const selectNumber = (number) =>
+    const selectNumber = (number) => {
         setSelectedNumbers([...selectedNumbers, number]);
-
+};
     return (
         <View>
             <Text style={styles.target}>{target}</Text>

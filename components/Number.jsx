@@ -3,8 +3,9 @@ import React from "react";
 
 export default Number = ({ id, number, isSelected, onSelected }) => {
     const handlePress = () => {
-        console.info(number);
-        onSelected(id);
+        if (!isSelected) {
+            onSelected(id);
+        }
     };
 
     return (
