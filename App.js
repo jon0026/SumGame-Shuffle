@@ -5,7 +5,7 @@ import Game from './components/Game';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Game randomNumbersCount={6} />
+      <Game randomNumbersCount={6} initialSeconds={10}/>
       <StatusBar style="auto" />
     </View>
   );
