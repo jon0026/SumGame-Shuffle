@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import Number from "./Number";
 
@@ -58,11 +58,41 @@ export default Game = ({ randomNumbersCount, initialSeconds }) => {
     }
   };
 
+  //Function para reiniciar el juego
+  const resetGame = () => {
+    //Volvemos a generar los números aleatorios
+  const  numbers = Array.from({ length: randomNumbersCount }).map(
+      () => 1 + Math.floor(10 * Math.random())
+    );
+    //Volvemos a generar el target
+   const target = numbers
+      .slice(0, randomNumbersCount - 2)
+      .reduce((acc, cur) => acc + cur, 0);
+    setRandomNumbers(numbers);
+    setTarget(target);
+
+    //Volvemos a inicializar los seleccionados
+    setSelectedNumbers([]);
+    //Volvemos a inicializar los segundos
+    setRemainingSeconds(initialSeconds);
+    //Volvemos a inicializar el estado del juego
+    setGameSatus("PLAYING");
+    //Volvemos a reiniciar el intervalo
+    clearInterval(intervalId.current);
+    
+    intervalId.current = setInterval(
+      () => setRemainingSeconds((seconds) => seconds - 1),
+      1000
+    );
+  };
   return (
     <View>
       <Text style={styles.target}>{target}</Text>
       <Text style={[styles.target, styles[gameStatus]]}>{gameStatus}</Text>
       <Text>{remainingSeconds}</Text>
+      <View display={gameStatus != "PLAYING"?'flex':'none'}>
+        <Button title="Jugar de nuevo" onPress={resetGame}  />
+        </View>
       <View style={styles.randomContainer}>
         {randomNumbers.map((number, index) => (
           <Number
@@ -74,9 +104,12 @@ export default Game = ({ randomNumbersCount, initialSeconds }) => {
           />
         ))}
       </View>
+     
     </View>
   );
 };
+//Button that resets the game when lost or won
+
 
 const styles = StyleSheet.create({
   target: {
@@ -101,5 +134,6 @@ const styles = StyleSheet.create({
   WON: {
     backgroundColor: "#33FF39",
     color: "white",
-  },
+  }
+
 });
